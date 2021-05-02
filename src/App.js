@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import "./App.css";
-import { DnD } from "./DnD";
+import { DnD, Draggable } from "./DnD";
 import Grid from "./Grid";
 import Item from "./Item";
 
@@ -30,11 +30,33 @@ function App() {
     <div className="App">
       <Grid>
         <DnD sortEndHandler={sortEndHandler}>
-          {items.map((item, index) => (
-            <Item key={item} click={click} index={index}>
-              {item}
+          <Draggable key={0} index={0} span="2">
+            <Item index={0} click={click}>
+              test 1
             </Item>
-          ))}
+          </Draggable>
+          <Draggable key={1} index={1}>
+            <Item index={1} click={click}>
+              test 2
+            </Item>
+          </Draggable>
+          <Draggable key={2} index={2}>
+            <Item index={2} click={click}>
+              test 3
+            </Item>
+          </Draggable>
+          <Draggable key={3} index={3}>
+            <Item index={3} click={click}>
+              test 4
+            </Item>
+          </Draggable>
+          {/* {items.map((item, index) => (
+            <Draggable key={item} index={index}>
+              <Item index={index + 1} click={click}>
+                {item}
+              </Item>
+            </Draggable>
+          ))} */}
         </DnD>
       </Grid>
     </div>

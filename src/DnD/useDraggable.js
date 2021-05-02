@@ -1,21 +1,22 @@
-import { useCallback, useContext, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useItemsPositions, useDnD, context } from "./utilities/";
 
 const useDraggable = ({ index }) => {
+  const [isDragging, setIsDragging] = useState(false);
   const { setItems } = useContext(context);
-  const { checkIntersection, sortEnd } = useDnD();
+  const { dragging, sortEnd } = useDnD();
   const { calculateItemsPositions } = useItemsPositions();
 
   const ref = useRef();
 
   useEffect(() => {
-    const item = ref.current;
-    if (item) {
+    const draggable = ref.current;
+    if (draggable) {
       setItems((state) => {
-        const filteredSame = state.filter((i) => {
-          return i !== item;
+        const filteredSame = state.filter((item) => {
+          return item !== draggable;
         });
-        filteredSame.splice(index, 0, item);
+        filteredSame.splice(index, 0, draggable);
         return filteredSame;
       });
     }
@@ -48,12 +49,26 @@ const useDraggable = ({ index }) => {
         indexTarget: null,
       };
 
+      setIsDragging(true);
+
       let didmove = false;
-      const initialItemsPositions = calculateItemsPositions();
+      let initialItemsPositions = calculateItemsPositions();
       ref.current.style.transition = "none";
 
       const shadowNode = cloneNode();
       shadowNode.style.visibility = "hidden";
+
+      const updateInitialItemsPositions = () => {
+        initialItemsPositions = calculateItemsPositions();
+        dragging({
+          draggableIndex: index,
+          draggableShadow: shadowNode,
+          initialItemsPositions,
+          indexSort,
+        });
+      };
+
+      window.addEventListener("scroll", updateInitialItemsPositions);
 
       const pointermove = (e) => {
         didmove = true;
@@ -67,7 +82,12 @@ const useDraggable = ({ index }) => {
           y: currentPosition.y - position.y,
         };
         shadowNode.style.transform = `translate(${nexPosition.x}px,${nexPosition.y}px)`;
-        checkIntersection(index, shadowNode, initialItemsPositions, indexSort);
+        dragging({
+          draggableIndex: index,
+          draggableShadow: shadowNode,
+          initialItemsPositions,
+          indexSort,
+        });
       };
 
       document.addEventListener("pointermove", pointermove);
@@ -77,18 +97,21 @@ const useDraggable = ({ index }) => {
           if (didmove) {
             sortEnd(indexSort, initialItemsPositions);
           }
+          setIsDragging(false);
           ref.current.style.visibility = "visible";
           shadowNode.remove();
           document.removeEventListener("pointermove", pointermove);
+          window.removeEventListener("scroll", updateInitialItemsPositions);
         },
         { once: true }
       );
     },
-    [calculateItemsPositions, checkIntersection, cloneNode, index, sortEnd]
+    [calculateItemsPositions, cloneNode, dragging, index, sortEnd]
   );
 
   return {
     ref,
+    isDragging,
     handler: {
       onPointerDown: pointerdown,
     },

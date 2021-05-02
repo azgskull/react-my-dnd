@@ -47,12 +47,10 @@ export const useDnD = () => {
     [items, resetItemsPositions]
   );
 
-  const checkIntersection = useCallback(
-    (draggableIndex, draggableShadow, initialItemsPositions, indexSort) => {
-      // const draggable = items[draggableIndex];
-
+  const dragging = useCallback(
+    ({ draggableIndex, draggableShadow, initialItemsPositions, indexSort }) => {
       const bestIntersection = getBestIntersection({
-        draggable: draggableShadow,
+        draggableShadow,
         initialItemsPositions,
       });
 
@@ -92,6 +90,6 @@ export const useDnD = () => {
 
   return {
     sortEnd,
-    checkIntersection,
+    dragging,
   };
 };

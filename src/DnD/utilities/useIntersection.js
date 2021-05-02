@@ -10,14 +10,14 @@ export const useIntersection = () => {
         x0: draggableClientRect.x,
         x1: draggableClientRect.x + draggableClientRect.width,
         y0: draggableClientRect.y,
-        y1: draggableClientRect.y + draggableClientRect.width,
+        y1: draggableClientRect.y + draggableClientRect.height,
       };
 
       const item_ = {
         x0: itemClientRect.x,
         x1: itemClientRect.x + itemClientRect.width,
         y0: itemClientRect.y,
-        y1: itemClientRect.y + itemClientRect.width,
+        y1: itemClientRect.y + itemClientRect.height,
       };
 
       const intersection = {
@@ -43,13 +43,13 @@ export const useIntersection = () => {
   );
 
   const getBestIntersection = useCallback(
-    ({ draggable, initialItemsPositions }) => {
+    ({ draggableShadow, initialItemsPositions }) => {
       let bestIntersection = {
         index: null,
         percent: 0,
       };
 
-      const draggableClientRect = draggable.getBoundingClientRect();
+      const draggableClientRect = draggableShadow.getBoundingClientRect();
 
       items.forEach((item, indexItem) => {
         const itemClientRect = initialItemsPositions[indexItem];
@@ -57,6 +57,7 @@ export const useIntersection = () => {
           draggableClientRect,
           itemClientRect
         );
+
         if (percent > bestIntersection.percent) {
           bestIntersection = {
             index: indexItem,
