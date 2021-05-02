@@ -4,7 +4,7 @@ import Grid from "./Grid";
 import Item from "./Item";
 import { Sortable, SortableItem } from "./Sortable";
 
-const array = Array(335)
+const array = Array(50)
   .fill("")
   .map((i, index) => index);
 

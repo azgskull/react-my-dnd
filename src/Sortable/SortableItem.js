@@ -1,11 +1,11 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import useDraggable from "../DnD/useDraggable";
-export const SortableItem = forwardRef(({ children, index }, ref) => {
-  const { handler } = useDraggable({ ref, index });
+export const SortableItem = ({ children, index }) => {
+  const { handler, ref } = useDraggable({ index });
 
   return (
     <div {...handler} ref={ref}>
       {children}
     </div>
   );
-});
+};
