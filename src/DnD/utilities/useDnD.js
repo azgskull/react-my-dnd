@@ -47,22 +47,6 @@ export const useDnD = () => {
     [items, resetItemsPositions]
   );
 
-  const dragging = useCallback(
-    ({ draggableIndex, draggableShadow, initialItemsPositions, indexSort }) => {
-      const bestIntersection = getBestIntersection({
-        draggableShadow,
-        initialItemsPositions,
-      });
-
-      if (bestIntersection.percent > 10) {
-        indexSort.indexSource = draggableIndex;
-        indexSort.indexTarget = bestIntersection.index;
-        move(bestIntersection.index, draggableIndex, initialItemsPositions);
-      }
-    },
-    [getBestIntersection, move]
-  );
-
   const sortEnd = useCallback(
     (indexSort, initialItemsPositions) => {
       if (
@@ -86,6 +70,23 @@ export const useDnD = () => {
       }
     },
     [items, placeDraggableInNewPlace, resetItemsPositions, sortEndHandler]
+  );
+
+  const dragging = useCallback(
+    ({ draggableIndex, draggableShadow, initialItemsPositions, indexSort }) => {
+      const bestIntersection = getBestIntersection({
+        draggableShadow,
+        initialItemsPositions,
+      });
+
+      if (bestIntersection.percent > 0) {
+        indexSort.indexSource = draggableIndex;
+        indexSort.indexTarget = bestIntersection.index;
+        move(bestIntersection.index, draggableIndex, initialItemsPositions);
+        // sortEnd(indexSort, initialItemsPositions);
+      }
+    },
+    [getBestIntersection, move]
   );
 
   return {
