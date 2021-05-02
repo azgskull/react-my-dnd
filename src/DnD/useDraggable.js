@@ -53,11 +53,13 @@ const useDraggable = ({ index }) => {
       ref.current.style.transition = "none";
 
       const shadowNode = cloneNode();
+      shadowNode.style.visibility = "hidden";
 
       const pointermove = (e) => {
         didmove = true;
         shadowNode.setPointerCapture(edown.pointerId);
         ref.current.style.visibility = "hidden";
+        shadowNode.style.visibility = "visible";
 
         const currentPosition = { x: e.clientX, y: e.clientY };
         const nexPosition = {
