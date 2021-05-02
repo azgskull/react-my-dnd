@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import "./App.css";
+import { DnD } from "./DnD";
 import Grid from "./Grid";
 import Item from "./Item";
-import { Sortable, SortableItem } from "./Sortable";
 
 const array = Array(50)
   .fill("")
@@ -29,15 +29,13 @@ function App() {
   return (
     <div className="App">
       <Grid>
-        <Sortable sortEndHandler={sortEndHandler}>
+        <DnD sortEndHandler={sortEndHandler}>
           {items.map((item, index) => (
-            <SortableItem index={index} key={item}>
-              <Item click={click} index={index}>
-                {item}
-              </Item>
-            </SortableItem>
+            <Item key={item} click={click} index={index}>
+              {item}
+            </Item>
           ))}
-        </Sortable>
+        </DnD>
       </Grid>
     </div>
   );
