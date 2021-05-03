@@ -2,10 +2,10 @@
 My Drag and drop and sortable implementation for dnd
 
 Currently I'm still experimenting in the draft branch.
-For now I was able to put in place a DnD system could be used for sortable (and can be upgraded to accept moving draggable from group to group)
+For now I was able to put in place a DnD system that could be used for sortable (and can be upgraded to accept moving draggable from group to group)
 
 ## Draggable with different sizes
-That's the current challend I have now, this DnD is working perfectly if the draggables are the same sizes.
+That's the current challenge I have now, this DnD is working perfectly if the draggables are the same sizes.
 I'm working on this problem
 
 ## Auto Scroll
